@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../api/client";
 
 export default function Rooms() {
@@ -20,26 +20,37 @@ export default function Rooms() {
 
   const [city, setCity] = useState("");
   const [title, setTitle] = useState("");
+  const [amenity, setAmenity] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [sort, setSort] = useState("newest");
   const [page, setPage] = useState(1);
   const limit = 9;
 
+  const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
+
+  useEffect(() => {
+    const initialAmenity = searchParams.get("amenity");
+    if (initialAmenity) {
+      setAmenity(initialAmenity);
+      setPage(1);
+    }
+  }, [searchParams]);
 
   const query = useMemo(() => {
     const p = new URLSearchParams();
     if (title) p.set("title", title);
     if (city) p.set("city", city);
+    if (amenity) p.set("amenity", amenity);
     if (minPrice) p.set("minPrice", minPrice);
     if (maxPrice) p.set("maxPrice", maxPrice);
     if (sort) p.set("sort", sort);
     p.set("page", String(page));
     p.set("limit", String(limit));
     return `?${p.toString()}`;
-  }, [city, title, minPrice, maxPrice, sort, page]);
+  }, [city, title, amenity, minPrice, maxPrice, sort, page]);
 
   useEffect(() => {
     let alive = true;
@@ -92,6 +103,15 @@ export default function Rooms() {
             onChange={(e) => {
               setPage(1);
               setCity(e.target.value);
+            }}
+          />
+          <input
+            className="input"
+            placeholder="amenity (e.g. Wi-Fi)"
+            value={amenity}
+            onChange={(e) => {
+              setPage(1);
+              setAmenity(e.target.value);
             }}
           />
           <input
@@ -184,9 +204,13 @@ export default function Rooms() {
               <div className="row" style={{ justifyContent: "space-between" }}>
                 <div className="row">
                   {(r.amenities || []).slice(0, 3).map((a) => (
-                    <span className="badge" key={a}>
+                    <Link
+                      className="badge"
+                      key={a}
+                      to={`/rooms?amenity=${encodeURIComponent(a)}`}
+                    >
                       {a}
-                    </span>
+                    </Link>
                   ))}
                   {(r.amenities || []).length > 3 && (
                     <span className="badge">

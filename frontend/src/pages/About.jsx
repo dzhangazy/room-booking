@@ -1,7 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function About() {
+  const gallery = [
+    "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=1400&q=80",
+    "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1400&q=80",
+    "https://images.unsplash.com/photo-1502005097973-6a7082348e28?auto=format&fit=crop&w=1400&q=80",
+    "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1400&q=80",
+  ];
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % gallery.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [gallery.length]);
+
   return (
     <div className="container">
       <div className="page-hero">
@@ -99,7 +114,13 @@ export default function About() {
         <div className="section-title">Find us</div>
         <div className="card" style={{ padding: 22 }}>
           <div className="row">
-            <span className="icon-circle">
+            <a
+              className="icon-circle"
+              href="https://t.me/dzhangazy"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Telegram"
+            >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <path
                   d="M21.5 3.5L2.8 10.7c-.9.3-.9 1.6 0 1.9l4.6 1.5 1.7 5.3c.3.9 1.5 1.1 2 .3l2.6-3.6 4.9 3.6c.8.6 2 .2 2.3-.8l3.2-15.4c.2-1-.8-1.9-1.7-1.5Z"
@@ -107,12 +128,32 @@ export default function About() {
                   strokeLinejoin="round"
                 />
               </svg>
-            </span>
-            <span className="small">Telegram</span>
-            <strong style={{ marginLeft: 8 }}>dzhangazy</strong>
+            </a>
+            <a
+              className="small"
+              href="https://t.me/dzhangazy"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Telegram
+            </a>
+            <a
+              href="https://t.me/dzhangazy"
+              target="_blank"
+              rel="noreferrer"
+              style={{ marginLeft: 8, fontWeight: 700 }}
+            >
+              dzhangazy
+            </a>
           </div>
           <div className="row" style={{ marginTop: 10 }}>
-            <span className="icon-circle">
+            <a
+              className="icon-circle"
+              href="https://www.instagram.com/dzhangazy_/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram"
+            >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <rect
                   x="4"
@@ -125,9 +166,63 @@ export default function About() {
                 <circle cx="12" cy="12" r="3.5" strokeWidth="1.6" />
                 <circle cx="17" cy="7" r="1.2" fill="currentColor" />
               </svg>
-            </span>
-            <span className="small">Instagram</span>
-            <strong style={{ marginLeft: 8 }}>dzhangazy</strong>
+            </a>
+            <a
+              className="small"
+              href="https://www.instagram.com/dzhangazy_/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Instagram
+            </a>
+            <a
+              href="https://www.instagram.com/dzhangazy_/"
+              target="_blank"
+              rel="noreferrer"
+              style={{ marginLeft: 8, fontWeight: 700 }}
+            >
+              dzhangazy_
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div className="section">
+        <div className="section-title">Life around your stay</div>
+        <div className="card" style={{ padding: 22 }}>
+          <div className="carousel">
+            <button
+              className="btn"
+              onClick={() =>
+                setActiveSlide(
+                  (activeSlide - 1 + gallery.length) % gallery.length,
+                )
+              }
+            >
+              ←
+            </button>
+            <div className="carousel-frame">
+              <img
+                src={gallery[activeSlide]}
+                alt="Room Booking highlight"
+              />
+            </div>
+            <button
+              className="btn"
+              onClick={() => setActiveSlide((activeSlide + 1) % gallery.length)}
+            >
+              →
+            </button>
+          </div>
+          <div className="carousel-dots">
+            {gallery.map((_, idx) => (
+              <button
+                key={idx}
+                className={`dot ${idx === activeSlide ? "active" : ""}`}
+                onClick={() => setActiveSlide(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
           </div>
         </div>
       </div>

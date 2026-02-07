@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { api } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 
@@ -506,9 +506,13 @@ export default function RoomDetails() {
 
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
             {(room.amenities || []).map((a) => (
-              <span className="badge" key={a}>
+              <Link
+                className="badge"
+                key={a}
+                to={`/rooms?amenity=${encodeURIComponent(a)}`}
+              >
                 {a}
-              </span>
+              </Link>
             ))}
             {(room.amenities || []).length === 0 && (
               <span className="small">No amenities listed</span>

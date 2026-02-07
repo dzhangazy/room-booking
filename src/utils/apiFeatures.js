@@ -14,6 +14,12 @@ function buildRoomQuery(q) {
     if (q.maxPrice) filter.pricePerNight.$lte = parseNumber(q.maxPrice, 1e12);
   }
   if (q.guests) filter.maxGuests = { $gte: parseNumber(q.guests, 1) };
+  const amenitiesRaw = String(q.amenities || q.amenity || "");
+  const amenities = amenitiesRaw
+    .split(",")
+    .map((v) => v.trim())
+    .filter(Boolean);
+  if (amenities.length > 0) filter.amenities = { $all: amenities };
 
   return filter;
 }
