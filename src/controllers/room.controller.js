@@ -61,6 +61,32 @@ async function updateRoom(req, res, next) {
   }
 }
 
+async function updateAmenities(req, res, next) {
+  try {
+    const { id } = req.validated.params;
+    const { add, remove } = req.validated.body;
+
+    if (!add && !remove) {
+      return res
+        .status(400)
+        .json({ message: "provide add or remove for amenities" });
+    }
+
+    const update = {};
+    if (add) update.$addToSet = { amenities: add };
+    if (remove) update.$pull = { amenities: remove };
+
+    const room = await Room.findByIdAndUpdate(id, update, {
+      new: true,
+      runValidators: true,
+    });
+    if (!room) return res.status(404).json({ message: "room not found" });
+    res.json(room);
+  } catch (e) {
+    next(e);
+  }
+}
+
 async function deleteRoom(req, res, next) {
   try {
     const { id } = req.validated.params;
@@ -78,4 +104,11 @@ async function deleteRoom(req, res, next) {
   }
 }
 
-module.exports = { listRooms, getRoom, createRoom, updateRoom, deleteRoom };
+module.exports = {
+  listRooms,
+  getRoom,
+  createRoom,
+  updateRoom,
+  deleteRoom,
+  updateAmenities,
+};

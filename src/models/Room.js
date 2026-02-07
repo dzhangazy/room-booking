@@ -37,6 +37,7 @@ const roomSchema = new mongoose.Schema(
 );
 
 // compound index под фильтры/сортировку
-roomSchema.index({ city: 1, pricePerNight: 1, isActive: 1 });
+roomSchema.index({ city: 1, pricePerNight: 1 });
+roomSchema.index({ createdAt: -1 });
 
 module.exports = mongoose.model("Room", roomSchema);

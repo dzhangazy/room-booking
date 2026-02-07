@@ -25,12 +25,6 @@ async function confirmBooking(req, res, next) {
     );
     if (!booking) return res.status(404).json({ message: "booking not found" });
 
-    // advanced update: $inc
-    await Room.updateOne(
-      { _id: booking.roomId },
-      { $inc: { bookingsCount: 1 } },
-    );
-
     res.json({ message: "confirmed", booking });
   } catch (e) {
     next(e);
@@ -137,6 +131,8 @@ async function createBookingAdmin(req, res, next) {
       totalPrice,
     });
 
+    await Room.updateOne({ _id: roomId }, { $inc: { bookingsCount: 1 } });
+
     res.status(201).json(booking);
   } catch (e) {
     next(e);
@@ -198,6 +194,12 @@ async function deleteBookingAdmin(req, res, next) {
     const { id } = req.validated.params;
     const booking = await Booking.findByIdAndDelete(id);
     if (!booking) return res.status(404).json({ message: "booking not found" });
+    if (booking.status !== "cancelled") {
+      await Room.updateOne(
+        { _id: booking.roomId },
+        { $inc: { bookingsCount: -1 } },
+      );
+    }
     res.json({ message: "deleted", bookingId: id });
   } catch (e) {
     next(e);

@@ -40,6 +40,8 @@ async function createBooking(req, res, next) {
       totalPrice,
     });
 
+    await Room.updateOne({ _id: roomId }, { $inc: { bookingsCount: 1 } });
+
     res.status(201).json(booking);
   } catch (e) {
     next(e);
@@ -74,6 +76,10 @@ async function cancelBooking(req, res, next) {
 
     booking.status = "cancelled";
     await booking.save();
+    await Room.updateOne(
+      { _id: booking.roomId },
+      { $inc: { bookingsCount: -1 } },
+    );
 
     res.json({ message: "cancelled", bookingId: id });
   } catch (e) {

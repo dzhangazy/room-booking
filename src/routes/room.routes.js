@@ -10,6 +10,7 @@ const {
   createRoom,
   updateRoom,
   deleteRoom,
+  updateAmenities,
 } = require("../controllers/room.controller");
 
 const idParams = z.object({ id: z.string().min(10) });
@@ -44,6 +45,15 @@ const updateSchema = z.object({
   query: z.object({}).optional(),
 });
 
+const amenitiesSchema = z.object({
+  body: z.object({
+    add: z.string().min(1).optional(),
+    remove: z.string().min(1).optional(),
+  }),
+  params: idParams,
+  query: z.object({}).optional(),
+});
+
 const getSchema = z.object({
   body: z.object({}).optional(),
   params: idParams,
@@ -66,6 +76,13 @@ router.put(
   requireRole("admin"),
   validate(updateSchema),
   updateRoom,
+);
+router.patch(
+  "/:id/amenities",
+  auth,
+  requireRole("admin"),
+  validate(amenitiesSchema),
+  updateAmenities,
 );
 router.delete(
   "/:id",
