@@ -143,6 +143,7 @@ export default function Rooms() {
             <option value="newest">newest</option>
             <option value="priceAsc">price asc</option>
             <option value="priceDesc">price desc</option>
+            <option value="ratingAsc">rating asc</option>
             <option value="ratingDesc">rating desc</option>
           </select>
         </div>

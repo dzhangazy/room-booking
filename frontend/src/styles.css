@@ -752,12 +752,15 @@ html {
 }
 
 .chip {
+  display: inline-flex;
+  align-items: center;
   padding: 8px 14px;
   border-radius: 999px;
   border: 1px solid var(--chip-border);
   color: var(--chip-text);
   background: var(--chip-bg);
   font-size: 13px;
+  line-height: 1.2;
   letter-spacing: 0.3px;
 }
 

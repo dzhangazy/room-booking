@@ -153,14 +153,14 @@ export default function Contact() {
           </form>
         </div>
 
-        <div className="card contact-card stack">
+        <div className="card contact-card stack" style={{ marginTop: 12 }}>
           <div className="section-title">Hosting help</div>
           <div className="small">Contact tag: dzhangazy</div>
           <div className="small">
             Want to list a property or room? We will guide you through setup,
             pricing, and verification.
           </div>
-          <div className="chips">
+          <div className="chips" style={{ marginTop: 10 }}>
             <span className="chip">listing checklist</span>
             <span className="chip">pricing advice</span>
             <span className="chip">photo tips</span>

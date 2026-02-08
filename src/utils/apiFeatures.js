@@ -31,6 +31,7 @@ function buildSort(q) {
   if (s === "priceAsc") sort.pricePerNight = 1;
   else if (s === "priceDesc") sort.pricePerNight = -1;
   else if (s === "ratingDesc") sort.avgRating = -1;
+  else if (s === "ratingAsc") sort.avgRating = 1;
   else sort.createdAt = -1;
 
   return sort;
